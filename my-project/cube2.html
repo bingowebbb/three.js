@@ -65,7 +65,8 @@
 
 			var p = document.querySelectorAll('.position p');
 			var button = document.querySelectorAll('button');
-
+			
+			
 			init();
 			renderer.render( scene, camera );
 			// initGUI();
@@ -139,15 +140,17 @@
 				scene.rotation.x += .02;
 				scene.rotation.y += .02;
 				scene.rotation.z += .02;
+				p[0].innerHTML = '场景位置：x:' + scene.position.x + '，y:' + scene.position.y + '，z:' + scene.position.z;
+				p[1].innerHTML = '相机位置：x:' + camera.position.x + '，y:' + camera.position.y + '，z:' + camera.position.z;
 				renderer.render(scene, camera);
 				requestAnimationFrame( animate );
 			})();
 
 			function animate1() {
 				if (plus) {
-					scene.rotation.x += .05;
-					scene.rotation.y += .05;
-					scene.rotation.z += .05;
+					scene.rotation.x += .02;
+					scene.rotation.y += .02;
+					scene.rotation.z += .02;
 					scene.position.z += .1;
 					if (scene.position.z >= -2) {
 						this.plus = false;
@@ -177,11 +180,11 @@
 
 			function animate2() {
 				if (plus) {
-					scene.rotation.x += .05;
-					scene.rotation.y += .05;
-					scene.rotation.z += .05;
-					camera.position.z += .1;
-					if (camera.position.z >= -2) {
+					scene.rotation.x += .02;
+					scene.rotation.y += .02;
+					scene.rotation.z += .02;
+					camera.position.z += .07;
+					if (camera.position.z >= -1) {
 						this.plus = false;
 					}
 				} else {
@@ -189,12 +192,12 @@
 					scene.rotation.y -= .01;
 					scene.rotation.z -= .01;
 					camera.position.z -= .05;
-					if (camera.position.z <= -7) {
+					if (camera.position.z <= -9) {
 						scene.rotation.x -= .001;
 						scene.rotation.y -= .001;
 						scene.rotation.z -= .001;
 						camera.position.z -= .001;
-						if (camera.position.z <= -9.2) {
+						if (camera.position.z <= -10.2) {
 							plus = true;
 						}
 					}
