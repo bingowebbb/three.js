@@ -16,6 +16,7 @@
 
 			.position {
 				position: absolute;
+				width: 300px;
 				top: 10px;
 				left: 10px;
 				padding: 10px;
@@ -56,7 +57,7 @@
 				var container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 10 );
-				camera.position.z = 3;
+				camera.position.set(0,0,-10);
 				scene = new THREE.Scene();
 				initScene();
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -65,6 +66,7 @@
 				container.appendChild( renderer.domElement );
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
+				renderer.setClearColor('rgb(30,10,10)', 1.0);
 				var controls = new THREE.OrbitControls( camera, renderer.domElement );
 				// stats = new Stats();
 				// container.appendChild( stats.dom );
@@ -108,19 +110,40 @@
 				material.bumpMap.anisotropy = 4;
 				uniforms[ 'map' ].value = material.map;
 				uniforms[ 'bumpMap' ].value = material.bumpMap;
-				var geometry = new THREE.BoxGeometry( 1.0, 1.0, 1.0 );
+				var geometry = new THREE.BoxGeometry( 1.2, 1.2, 1.2 );
 				var mesh = new THREE.Mesh( geometry, material );
 				scene.add( mesh );
 			}
+
+			var plus = true;
+
+
 			function animate() {
-				scene.rotation.x += .01;
-				scene.rotation.y += .01;
-				scene.rotation.z += .01;
-				// camera.position.z += .01;
-				p.innerHTML = 'x:' + camera.position.x + '，y:' + camera.position.y + '，z:' + camera.position.z;
-				if (camera.position.z >= 6) {
-					camera.position.z -= 3;
+				if (plus) {
+					scene.rotation.x += .05;
+					scene.rotation.y += .05;
+					scene.rotation.z += .05;
+					scene.position.z += .1;
+					if (scene.position.z >= -2) {
+						this.plus = false;
+					}
+				} else {
+					scene.rotation.x -= .01;
+					scene.rotation.y -= .01;
+					scene.rotation.z -= .01;
+					scene.position.z -= .05;
+					if (scene.position.z <= -7) {
+						scene.rotation.x -= .001;
+						scene.rotation.y -= .001;
+						scene.rotation.z -= .001;
+						scene.position.z -= .001;
+						if (scene.position.z <= -9.2) {
+							plus = true;
+						}
+					}
 				}
+				
+				p.innerHTML = 'x:' + scene.position.x + '，y:' + scene.position.y + '，z:' + scene.position.z;
 				renderer.render( scene, camera );
 				requestAnimationFrame( animate );
 				// stats.update();
