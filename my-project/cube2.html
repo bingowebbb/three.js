@@ -16,11 +16,19 @@
 
 			.position {
 				position: absolute;
-				width: 300px;
+				min-width: 400px;
+				min-height: 92px;
 				top: 10px;
 				left: 10px;
 				padding: 10px;
 				background: rgba(150,10,10,.6);
+			}
+
+			.btn{
+				position: absolute;
+				top: 120px;
+				left: 10px;
+				padding: 10px;
 			}
 		</style>
 	</head>
@@ -29,6 +37,12 @@
 
 		<div class="position">
 			<p></p>
+			<p></p>
+		</div>
+
+		<div class="btn">
+			<button>场景动</button>
+			<button>相机动</button>
 		</div>
 
 		<script src="../build/three.js"></script>
@@ -49,10 +63,13 @@
 				'maxLayers': 25
 			};
 
-			var p = document.querySelector('.position p');
+			var p = document.querySelectorAll('.position p');
+			var button = document.querySelectorAll('button');
+
 			init();
+			renderer.render( scene, camera );
 			// initGUI();
-			animate();
+			// animate();
 			function init() {
 				var container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -116,9 +133,17 @@
 			}
 
 			var plus = true;
+				
 
+			(function animate() {
+				scene.rotation.x += .02;
+				scene.rotation.y += .02;
+				scene.rotation.z += .02;
+				renderer.render(scene, camera);
+				requestAnimationFrame( animate );
+			})();
 
-			function animate() {
+			function animate1() {
 				if (plus) {
 					scene.rotation.x += .05;
 					scene.rotation.y += .05;
@@ -143,11 +168,49 @@
 					}
 				}
 				
-				p.innerHTML = 'x:' + scene.position.x + '，y:' + scene.position.y + '，z:' + scene.position.z;
+				p[0].innerHTML = '场景位置：x:' + scene.position.x + '，y:' + scene.position.y + '，z:' + scene.position.z;
+				p[1].innerHTML = '相机位置：x:' + camera.position.x + '，y:' + camera.position.y + '，z:' + camera.position.z;
 				renderer.render( scene, camera );
-				requestAnimationFrame( animate );
+				requestAnimationFrame( animate1 );
 				// stats.update();
 			}
+
+			function animate2() {
+				if (plus) {
+					scene.rotation.x += .05;
+					scene.rotation.y += .05;
+					scene.rotation.z += .05;
+					camera.position.z += .1;
+					if (camera.position.z >= -2) {
+						this.plus = false;
+					}
+				} else {
+					scene.rotation.x -= .01;
+					scene.rotation.y -= .01;
+					scene.rotation.z -= .01;
+					camera.position.z -= .05;
+					if (camera.position.z <= -7) {
+						scene.rotation.x -= .001;
+						scene.rotation.y -= .001;
+						scene.rotation.z -= .001;
+						camera.position.z -= .001;
+						if (camera.position.z <= -9.2) {
+							plus = true;
+						}
+					}
+				}
+				
+				p[0].innerHTML = '场景位置：x:' + scene.position.x + '，y:' + scene.position.y + '，z:' + scene.position.z;
+				p[1].innerHTML = '相机位置：x:' + camera.position.x + '，y:' + camera.position.y + '，z:' + camera.position.z;
+				renderer.render( scene, camera );
+				requestAnimationFrame( animate2 );
+				// stats.update();
+			}
+
+
+			button[0].onclick = animate1;
+			button[1].onclick = animate2;
+			// button[1].onclick = animate1();
 		</script>
 
 	</body>
