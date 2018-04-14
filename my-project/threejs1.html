@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>my first threejs project</title>
+</head>
+
+<style type="text/css">
+	body {
+		background: rgba(0,0,0,.2);
+	}
+	#canvas {
+		width: 100%;
+		height: 600px;
+		margin: 100px auto;
+	}
+	.param {
+		position: fixed;
+		left: 20px;
+		top: 20px;
+		width: 180px;
+		padding: 20px;
+		background: rgba(0,0,0,.9);
+		color: #FFF;
+		font-size: 12px;
+	}
+	.param p span {
+		display: inline-block;
+		margin-left: 10px;
+		width: 30px;
+		height: 24px;
+		background: #666;
+		line-height: 24px;
+		text-align: center;
+		border: 1px solid #aaa;
+		cursor: pointer;
+	}
+	input {
+		outline: none;
+		border: 1px solid #666;
+	}
+</style>
+
+
+<body>
+	<!-- <canvas id="canvas"></canvas> -->
+	<div class="param">
+		<p class="cameraZ">相机z:  <span>-</span><span>2</span><span>+</span></p>
+		<p class="scene">场景x: <em></em></p>
+		<p class="scene">场景y: <em></em></p>
+		<p class="scene">场景z: <em></em></p>
+	</div>
+	<script src="../build/three.js"></script>
+
+	<script src="../examples/js/renderers/Projector.js"></script>
+	<script src="../examples/js/renderers/CanvasRenderer.js"></script>
+
+	<script src="../examples/js/libs/stats.min.js"></script>
+
+	<script type="text/javascript">
+
+  		var p = document.querySelectorAll('.param .cameraZ');
+  		for (var i = 0; i < p.length; i++) {
+  			var span = p[i].getElementsByTagName('span');
+  			span[0].onclick = function () {
+  				span[1].innerText = Number(span[1].innerText) - 1;
+  				span[1].innerText = Math.max(span[1].innerText, 0);
+  				camera.position.z = span[1].innerText;
+  			}
+  			span[2].onclick = function () {
+  				span[1].innerText = Number(span[1].innerText) + 1;
+  				camera.position.z = span[1].innerText;
+  			}
+  		}
+
+
+  		var em = document.querySelectorAll('em');
+  		
+  		var renderer;
+  		function initRenderer () {
+  			renderer = new THREE.WebGLRenderer({
+  				antialias: true
+  			});
+  			renderer.setSize(window.innerWidth, window.innerHeight);
+  			document.body.appendChild(renderer.domElement);
+  			renderer.setClearColor('rgb(30,0,50)', 1.0);
+  		}
+
+  		var camera;
+  		function initCamera () {
+  			camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 800);
+  			camera.position.z = document.querySelectorAll('.param .cameraZ span')[1].innerText;
+  		}
+
+  		var scene;
+  		function initScene () {
+  			scene = new THREE.Scene();
+  			var geometry = new THREE.CubeGeometry(1,1,1);
+  			var material = new THREE.MeshBasicMaterial({
+  				color: 'rgb(10,100,200)'
+  			});
+  			var cube = new THREE.Mesh(geometry, material);
+  			scene.add(cube);
+  		}
+
+  		function render () {
+  			requestAnimationFrame(render);
+  			scene.rotation.x += .01;
+  			scene.rotation.y += .02;
+  			scene.rotation.z += .05;
+  			// if (camera.position.z >= 8) {
+  			// 	camera.position.z = 2;
+  			// }
+  			renderer.render(scene, camera);
+  			em[0].innerHTML = scene.rotation.x;
+	  		em[1].innerHTML = scene.rotation.y;
+	  		em[2].innerHTML = scene.rotation.z;
+  		}
+
+  		function initThree () {
+  			initRenderer();
+  			initCamera();
+  			initScene();
+  			render();
+  		}
+
+  		initThree();
+	</script>
+
+</body>
+</html>
