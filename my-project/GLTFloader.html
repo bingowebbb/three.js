@@ -27,6 +27,7 @@
 
 		<script>
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
 			var container, stats, controls;
 			var camera, scene, renderer, light;
 			init();
@@ -40,12 +41,17 @@
 				controls.target.set( 0, -0.2, -0.2 );
 				controls.update();
 				// envmap
-				var path = 'textures/cube/skyboxsun25deg/';
+				var path = 'models/gltf/duck/images/';
 				var format = '.jpg';
+				// var envMap = new THREE.CubeTextureLoader().load( [
+				// 	path + 'x1' + format, path + 'x2' + format,
+				// 	path + 'z1' + format, path + 'z2' + format,
+				// 	path + 'y2' + format, path + 'y1' + format
+				// ] );
 				var envMap = new THREE.CubeTextureLoader().load( [
-					path + 'px' + format, path + 'nx' + format,
+					path + 'nx' + format, path + 'px' + format,
 					path + 'py' + format, path + 'ny' + format,
-					path + 'pz' + format, path + 'nz' + format
+					path + 'nz' + format, path + 'pz' + format
 				] );
 				scene = new THREE.Scene();
 				scene.background = envMap;
