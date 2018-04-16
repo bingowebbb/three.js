@@ -4,8 +4,8 @@
     {
         "formatVersion" : 3,
         "generatedBy"   : "Blender 2.63 Exporter",
-        "vertices"      : 8,
-        "faces"         : 6,
+        "vertices"      : 10,
+        "faces"         : 8,
         "normals"       : 0,
         "colors"        : 22,
         "uvs"           : 0,
